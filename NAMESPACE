@@ -1,0 +1,5 @@
+useDynLib(aCAP, .registration=TRUE)
+importFrom(Rcpp, evalCpp)
+
+export(aCAPf1f2)
+export(aCAP)
