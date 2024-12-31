@@ -15,7 +15,8 @@ Imports:
     Rcpp (>= 1.0.11),
     stats
 RoxygenNote: 7.3.2
-Suggests: 
+Suggests:
+    devtools,
     knitr,
     rmarkdown
 VignetteBuilder: knitr

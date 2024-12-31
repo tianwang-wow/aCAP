@@ -3,4 +3,3 @@ importFrom(Rcpp, evalCpp)
 
 export(aCAPf1f2)
 export(aCAP)
-export(plotn)
