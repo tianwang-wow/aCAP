@@ -4,18 +4,18 @@
 #' @param func2 A matrix for curve 2 with time (equidistant) in the first column and function values in the second column.
 #' @param alpha A vector of alpha values. Default = 0.5.
 #' @param plots Whether to plot the warping results. Default = TRUE.
-#' @param verbose Whether to output the procedure. Default = FALSE.
+#' @param verbose Whether to output the detailed procedure and calculate distances. Default = FALSE.
 #' @param n_digit Number of decimal points in the output. Default = 5.
-#' @param max_drv An integer of the maximum derivative allowed for warping function. Default = 10. A smaller value decreases computation time.
+#' @param max_drv An integer specifying the maximum derivative allowed for the warping function. Default = 10. A smaller value decreases computation time.
 #'
 #' @return A list of warping results for each alpha.
 #' \itemize{
-#'   \item \code{warping_func}: A matrix for warping function with time in the first column and function values in the second column.
-#'   \item \code{warped_func}: A matrix for warped function with time in the first column and function values in the second column.
+#'   \item \code{warping_func}: A matrix for the warping function with time in the first column and function values in the second column.
+#'   \item \code{warped_func}: A matrix for the warped function with time in the first column and function values in the second column.
 #'   \item \code{d_A}: Amplitude shape distance.
 #'   \item \code{d_P}: Phase distance.
 #'   \item \code{d_C}: Optimal combined distance.
-#'   \item \code{alpha}: The alpha values used in warping.
+#'   \item \code{alpha}: The alpha value(s) used in warping.
 #' }
 #' @export
 #'
@@ -69,7 +69,7 @@ aCAPf1f2 = function(func1,
            main =  paste0('warping function (alpha=', current_alpha, ')'))
       graphics::lines(t, t, lty = 4, lwd = 0.5)
       ### Plot warped function
-      plot(t, func1[,2], type = 'l', ylim = range(func1[,2], func2[,2]), ylab = 'x(h(t)) & y(t)', lwd = 1.5,
+      plot(t, func1[,2], type = 'l', ylim = range(func1[,2], func2[,2]), ylab = 'x(h(t)) & z(t)', lwd = 1.5,
            main = paste0('warping results (alpha=', current_alpha, ')'))
       graphics::lines(t, func2[,2], lty = 2, lwd = 1.5)
       graphics::lines(t, warped_func[,2], lty = 3, lwd = 1.5)
@@ -87,25 +87,25 @@ aCAPf1f2 = function(func1,
   return(output)
 }
 
-#' Fitting aCAP model on a set of curves
+#' Fitting aCAP model to a set of curves
 #'
 #' @param fdata A matrix for functions with time (equidistant) in the first column and function values in the remaining columns.
 #' @param alpha A vector of alpha values. Default = 0.5.
 #' @param n_ite Maximum number of iterations.
 #' @param plots Whether to plot the warping results. Default = TRUE.
-#' @param verbose Whether to output the procedure. Default = FALSE.
+#' @param verbose Whether to output the detailed procedure. Default = FALSE.
 #' @param n_digit Number of decimal points in the output. Default = 5.
-#' @param stopping Stopping rule criterion. Default = 0.02.
+#' @param stopping Criterion for the stopping rule. Default = 0.02.
 #' @param col Color of plotted functions. Default = 'gray60'.
-#' @param max_drv An integer of the maximum derivative allowed for the warping function. Default = 10.
+#' @param max_drv An integer specifying the maximum derivative allowed for the warping function. Default = 10. A smaller value decreases computation time.
 #'
 #' @return A list of aCAP results for each alpha.
 #' \itemize{
-#'   \item \code{warping_func}: A matrix for warping functions with time in the first column and function values in the remaining columns.
-#'   \item \code{warped_func}: A matrix for warped functions with time in the first column and function values in the remaining columns.
+#'   \item \code{warping_func}: A matrix for the warping functions with time in the first column and function values in the remaining columns.
+#'   \item \code{warped_func}: A matrix for the warped functions with time in the first column and function values in the remaining columns.
 #'   \item \code{V_A}: Warping-related amplitude variation.
 #'   \item \code{V_P}: Phase variation.
-#'   \item \code{alpha}: The alpha values used in model fitting.
+#'   \item \code{alpha}: The alpha value(s) used in model fitting.
 #'   \item \code{total_ite}: Number of iterations.
 #' }
 #' @export
@@ -123,14 +123,14 @@ aCAPf1f2 = function(func1,
 #' }
 #' fit = aCAP(fdata = fdata, alpha = seq(0, 1, 0.25), verbose = FALSE, plot = FALSE, max_drv = 5)
 aCAP = function(fdata,
-                   alpha = 0.5,
-                   n_ite = 100,
-                   plots = TRUE,
-                   verbose = FALSE,
-                   n_digit = 5,
-                   stopping = 0.02,
-                   col = 'gray60',
-                   max_drv = 10)
+                alpha = 0.5,
+                n_ite = 100,
+                plots = TRUE,
+                verbose = FALSE,
+                n_digit = 5,
+                stopping = 0.02,
+                col = 'gray60',
+                max_drv = 10)
 {
   if (max_drv > 10) { warning('The max of derivative may be too large due to computation intensity. Consider setting a smaller value.') }
   if (verbose) cat("In prepraration... \n")
@@ -148,7 +148,7 @@ aCAP = function(fdata,
     if (verbose) { cat(paste('***** alpha =', current_alpha), '***** \n') }
     
     ### Step 1: Initialization
-    k = 0 # iteration index
+    k = 0
     stop_ite = FALSE
     V_A = V_P = NULL
     warping_func = matrix(rep(t, n_fdata+1), ncol = n_fdata+1)
@@ -196,9 +196,7 @@ aCAP = function(fdata,
         V_A = VA(fdata = warped_func)
         V_P = VP(hdata = warping_func)
         cat(paste('V_A:', dec(V_A, n_digit), '   '))
-        cat(paste('V_P:', dec(V_P, n_digit), '   '))
-        cat(paste('alpha*V_A + (1-alpha)*V_P =',
-                  dec(current_alpha * V_A + (1-current_alpha) * V_P, n_digit)), '\n')
+        cat(paste('V_P:', dec(V_P, n_digit), '\n'))
       }
       if (stop_ite) {
         warped_func = comp(fdata, warping_func)
@@ -207,9 +205,7 @@ aCAP = function(fdata,
         if (verbose) {
           cat('Final variations: \n')
           cat(paste('V_A:', dec(V_A, n_digit), '   '))
-          cat(paste('V_P:', dec(V_P, n_digit), '   '))
-          cat(paste('alpha*V_A + (1-alpha)*V_P =',
-                    dec(current_alpha * V_A + (1-current_alpha) * V_P, n_digit)), '\n')
+          cat(paste('V_P:', dec(V_P, n_digit), '\n'))
           cat('Iterations stopped. \n \n')
         }
         break
@@ -232,8 +228,6 @@ aCAP = function(fdata,
   }
   return(output)
 }
-
-dec = function(x, k = 3) { return(trimws(format(round(x, k), nsmall = k))) }
 
 plotn = function(fdata,
                  n = 20,
@@ -272,29 +266,29 @@ drv = function(fdata)
 
 inv = function(hdata)
 {
-  time = hdata[,1]
+  t = hdata[,1]
   inv_hdata = hdata
-  for (j in 2:ncol(hdata)) { inv_hdata[,j] = stats::approxfun(hdata[,j], time)(time) }
+  for (j in 2:ncol(hdata)) { inv_hdata[,j] = stats::approxfun(hdata[,j], t)(t) }
   inv_hdata[nrow(inv_hdata),] = 1 # make sure h(1) = 1
   return(inv_hdata)
 }
 
 comp = function(fdata, hdata)
 {
-  time = fdata[,1]
+  t = fdata[,1]
   new_fdata = fdata
   n_col = ncol(fdata)
   if (ncol(hdata) == 2) {
-    for (j in 2:ncol(new_fdata)) { new_fdata[,j] = stats::approxfun(time, fdata[,j])(hdata[,2]) }
+    for (j in 2:ncol(new_fdata)) { new_fdata[,j] = stats::approxfun(t, fdata[,j])(hdata[,2]) }
   } else {
-    for (j in 2:ncol(new_fdata)) { new_fdata[,j] = stats::approxfun(time, fdata[,j])(hdata[,j]) }
+    for (j in 2:ncol(new_fdata)) { new_fdata[,j] = stats::approxfun(t, fdata[,j])(hdata[,j]) }
   }
   if (sum(is.na(new_fdata[1, ])) > 0) {
     new_fdata[1, 2:n_col] = fdata[1, 2:n_col]
   }
-  nt = nrow(new_fdata)
-  if (sum(is.na(new_fdata[nt, ])) > 0) {
-    new_fdata[nt, 2:n_col] = fdata[nt, 2:n_col]
+  n_t = nrow(new_fdata)
+  if (sum(is.na(new_fdata[n_t, ])) > 0) {
+    new_fdata[n_t, 2:n_col] = fdata[n_t, 2:n_col]
   }
   return(new_fdata)
 }
@@ -320,19 +314,6 @@ int_eacht = function(fdata)
   
   return(integral)
 }
-
-LVD = function(fdata)
-{
-  time = fdata[,1]
-  len_t = length(time)
-  abs_dfdata = cbind(time, abs(drv(fdata)[,-1]))
-  lvd_fdata = fdata
-  lvd_fdata = int_eacht(abs_dfdata)
-  lvd_fdata[,-1] = t(t(lvd_fdata[,-1]) / lvd_fdata[len_t,-1])
-  return(lvd_fdata)
-}
-
-LVQ = function(fdata) { return(inv(LVD(fdata))) }
 
 Lp = function(fdata, p = 2) { return(int(cbind(fdata[,1], abs(fdata[,-1])^p))^(1/p)) }
 
@@ -393,8 +374,6 @@ VA = function(fdata, Jfdata, Jfmean)
 
 VP = function(hdata) { return(mean(int(cbind(hdata[,1], (sqrt(drv(hdata)[,-1])-1)^2))/2)) }
 
-L1_drv = function(fdata) { return(colSums(abs(diff(fdata[, -1, drop = FALSE])))) }
-
 est_Jfunc = function(dfdata,
                      L1norm_drv = NULL,
                      subs)
@@ -414,5 +393,46 @@ est_Jfunc = function(dfdata,
   }
   names(Jfunc_ext_ls) = subs
   return(Jfunc_ext_ls)
+}
+
+dec = function(x, k = 3) { return(trimws(format(round(x, k), nsmall = k))) } # Reference: https://stackoverflow.com/questions/3443687/formatting-decimal-places-in-r 
+
+LVD = function(fdata)
+{
+  t = fdata[,1]
+  n_t = length(t)
+  abs_dfdata = cbind(t, abs(drv(fdata)[,-1]))
+  lvd_fdata = fdata
+  lvd_fdata = int_eacht(abs_dfdata)
+  lvd_fdata[,-1] = t(t(lvd_fdata[,-1]) / lvd_fdata[n_t,-1])
+  return(lvd_fdata)
+}
+
+LVQ = function(fdata) { return(inv(LVD(fdata))) }
+
+plotn = function(fdata,
+                 n = 20,
+                 xlab = 't',
+                 ylab = 'x(t)',
+                 ylim = NULL,
+                 main = 'functions',
+                 col = 'gray60',
+                 plotmean = TRUE,
+                 lwd_mean = 3.5,
+                 ...)
+{
+  n_func = ncol(fdata)-1
+  if (is.null(ylim)) { ylim = range(fdata[,-1]) }
+  if (length(col)==1) { col = rep(col, n_func) }
+  
+  plot(fdata[,1], fdata[,2],
+       type = 'l', xlab = xlab, ylim = ylim, ylab = ylab, main = main, col = col[1], ...)
+  if (min(n, n_func) >= 2) {
+    for (j in 2:min(n_func, n)) { graphics::lines(fdata[,1], fdata[,j+1], type = 'l', col = col[j], ...) }
+    if (plotmean) {
+      fmean = fmean_L2(fdata)
+      graphics::lines(fmean[,1], fmean[,2], lwd = lwd_mean, col = 'black')
+    }
+  }
 }
 

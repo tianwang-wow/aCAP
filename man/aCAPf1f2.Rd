@@ -23,21 +23,21 @@ aCAPf1f2(
 
 \item{plots}{Whether to plot the warping results. Default = TRUE.}
 
-\item{verbose}{Whether to output the procedure. Default = FALSE.}
+\item{verbose}{Whether to output the detailed procedure and calculate distances. Default = FALSE.}
 
 \item{n_digit}{Number of decimal points in the output. Default = 5.}
 
-\item{max_drv}{An integer of the maximum derivative allowed for warping function. Default = 10. A smaller value decreases computation time.}
+\item{max_drv}{An integer specifying the maximum derivative allowed for the warping function. Default = 10. A smaller value decreases computation time.}
 }
 \value{
 A list of warping results for each alpha.
 \itemize{
-  \item \code{warping_func}: A matrix for warping function with time in the first column and function values in the second column.
-  \item \code{warped_func}: A matrix for warped function with time in the first column and function values in the second column.
+  \item \code{warping_func}: A matrix for the warping function with time in the first column and function values in the second column.
+  \item \code{warped_func}: A matrix for the warped function with time in the first column and function values in the second column.
   \item \code{d_A}: Amplitude shape distance.
   \item \code{d_P}: Phase distance.
   \item \code{d_C}: Optimal combined distance.
-  \item \code{alpha}: The alpha values used in warping.
+  \item \code{alpha}: The alpha value(s) used in warping.
 }
 }
 \description{
