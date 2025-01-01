@@ -82,7 +82,7 @@ Find an optimal warping from curve 1 to curve 2 under alpha = 0.5:
 fit = aCAPf1f2(func1 = fdata1, func2 = fdata2, alpha = 0.5, verbose = F)
 ```
 
-<img src="/Users/SpaceRanger/OneDriveLocal/Work/eCAP_analysis/R_package/aCAP/docs/README_files/figure-gfm/find optimal warping-1.png" style="display: block; margin: auto;" />
+<img src="./docs/README_files/figure-gfm/find optimal warping-1.png" style="display: block; margin: auto;" />
 
 In the right panel, curve 1 is the solid curve, curve 2 is the dashed
 curve, and the warped curve from curve 1 to curve 2 is the dotted one.
@@ -95,7 +95,7 @@ Simulate a set of 20 curves:
 
 ``` r
 set.seed(12345)
-n = 20 # number of curves
+n = 3 # number of curves
 t = seq(0, 1, length.out = 100+1) # time
 fdata = matrix(t, nrow = length(t), ncol = n+1)
 for (j in 1:n) {
@@ -126,4 +126,4 @@ plot(t, fit$"0.5"$warped_func[,2], main = 'warped functions', ylab = 'x(h(t))', 
 for (j in 2:n) { lines(t, fit$"0.5"$warped_func[,j+1], type = 'l', col = 'gray60') }
 ```
 
-<img src="/Users/SpaceRanger/OneDriveLocal/Work/eCAP_analysis/R_package/aCAP/docs/README_files/figure-gfm/plot results-1.png" style="display: block; margin: auto;" />
+<img src="./docs/README_files/figure-gfm/plot results-1.png" style="display: block; margin: auto;" />
