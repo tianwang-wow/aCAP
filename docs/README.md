@@ -1,6 +1,9 @@
 aCAP
 ================
 
+Fit adjustable combination of amplitude and phase (aCAP) model for
+functional data.
+
 ## Installation
 
 ``` r
@@ -95,7 +98,7 @@ Simulate a set of 20 curves:
 
 ``` r
 set.seed(12345)
-n = 3 # number of curves
+n = 20 # number of curves
 t = seq(0, 1, length.out = 100+1) # time
 fdata = matrix(t, nrow = length(t), ncol = n+1)
 for (j in 1:n) {
