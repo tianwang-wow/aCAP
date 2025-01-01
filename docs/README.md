@@ -1,11 +1,5 @@
- 
+aCAP
 ================
-
-<style type="text/css">
-  body{
-  font-size: 15pt;
-}
-</style>
 
 ## Installation
 
@@ -114,7 +108,7 @@ for (j in 1:n) {
 Fit aCAP to the simulated 20 curves using alpha = 0.5:
 
 ``` r
-fit = aCAP(fdata = fdata, alpha = 0.5, verbose = F, plot = F, max_drv = 5)
+fit = aCAP(fdata = fdata, alpha = 0.5, verbose = F, plot = F)
 ```
 
 Plot separation results:
