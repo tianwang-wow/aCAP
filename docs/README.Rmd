@@ -4,7 +4,7 @@ output:
   github_document
 ---
 
-Fit adjustable combination of amplitude and phase (aCAP) model for functional data.
+Fit an alpha-indexed adjustable combination of amplitude and phase (aCAP) model for functional data.
 
 
 ```{r setup, include=FALSE}
