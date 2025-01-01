@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Installation
-```{r load packages, message = FALSE, warning = FALSE, error = FALSE}
+```{r load packages, message = FALSE, warning = FALSE}
 devtools::install_github("tianwang-wow/aCAP")
 library(aCAP)
 ```

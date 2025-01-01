@@ -8,21 +8,6 @@ Fit an alpha-indexed adjustable combination of amplitude and phase
 
 ``` r
 devtools::install_github("tianwang-wow/aCAP")
-```
-
-    ## ── R CMD build ─────────────────────────────────────────────────────────────
-    ##      checking for file ‘/private/var/folders/hh/lc7t0m892v9b7rtfyn6p251m0000gn/T/RtmpKZXcbR/remotes39521e7fa1c0/tianwang-wow-aCAP-6f055cf/DESCRIPTION’ ...  ✔  checking for file ‘/private/var/folders/hh/lc7t0m892v9b7rtfyn6p251m0000gn/T/RtmpKZXcbR/remotes39521e7fa1c0/tianwang-wow-aCAP-6f055cf/DESCRIPTION’
-    ##   ─  preparing ‘aCAP’:
-    ##   ✔  checking DESCRIPTION meta-information
-    ## ─  cleaning src
-    ##   ─  checking for LF line-endings in source and make files and shell scripts
-    ##   ─  checking for empty or unneeded directories
-    ##    Omitted ‘LazyData’ from DESCRIPTION
-    ##   ─  building ‘aCAP_0.1.0.tar.gz’
-    ##      
-    ## 
-
-``` r
 library(aCAP)
 ```
 
